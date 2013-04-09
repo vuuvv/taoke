@@ -1,12 +1,11 @@
 from django.conf.urls import patterns, include, url
 
-from vuuvv.views import convention_view
-
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'', include('taoke.default.urls')),
     # Examples:
     # url(r'^$', 'website.views.home', name='home'),
     # url(r'^website/', include('website.foo.urls')),
@@ -16,5 +15,4 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls))
-    url(r'(?P<app>\w+)?/?(?P<view>\w+)?', convention_view),
 )
