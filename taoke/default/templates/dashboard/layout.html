@@ -5,6 +5,10 @@
 <link media="all" rel="stylesheet" href="{% static 'css/dashboard.css' %}" type="text/css" />
 {% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 {% block body %}
 <div class="header nls">
 	<div class="logo">
@@ -25,14 +29,18 @@
 </div>
 <div class="content">
 	<div class="left_side fl">
-		<div class="left_menu"></div>
-		<a href="" class="menu_close"></a>
+		<div class="left_menu">
+			<ul>
+				<li>123</li>
+			</ul>
+		</div>
+		<a href="" class="left_show" id="left_toggle" style="outline-style: none; outline-color: invert; outline-width: medium;" hidefocus="true" ></a>
 	</div>
 	<div class="main">
 		<div class="crumbs">
 			<div class="options"></div>
 			<div class="main_tab">
-				<div class="tabs">
+				<div class="tabs nls">
 					<ul>
 						<li></li>
 					</ul>
@@ -41,7 +49,7 @@
 				<a href="" class="next"></a>
 			</div>
 		</div>
-		<div class="tab_content"></div>
+		<div id="main_content" class="main_content"></div>
 	</div>
 </div>
 {% endblock %}

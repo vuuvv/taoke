@@ -4,6 +4,14 @@ body {
     line-height: 1.5;
 }
 
+html, body {
+    background: url(img/dashboard/left_bg.png) repeat-y -40px top #ebefef;
+}
+
+html.close, html.close body {
+	background: #e2e9ea;
+}
+
 .header {
     background: #3a6da4;
     height: 49px;
@@ -81,7 +89,17 @@ body {
     width: 118px;
 }
 
-.left_side a.menu_close, .left_side a.menu_open {
+.left_side_off {
+	width: 0;
+	padding: 0;
+}
+
+.left_side_off div {
+	visibility: hidden;
+	_display: none;
+}
+
+.left_side a.left_hide, .left_side a.left_show {
     background: url(img/dashboard/left_menu_toggle.png) no-repeat 1px center;
     width: 8px;
     display: block;
@@ -90,5 +108,26 @@ body {
     height: auto;
     right: -9px;
     top: 0;
+}
+
+.left_side a.left_show {
+	background-position: right center;
+}
+
+.main {
+	overflow: hidden;
+}
+
+/* crumbs -- sub tab */
+.crumbs {
+	height: 26px;
+	position: relative;
+}
+
+
+.main_content {
+	background: #fff;
+	border: 1px solid #c2d1d8;
+	position: relative;
 }
 
