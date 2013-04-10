@@ -1,9 +1,47 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>{{ frame.title }}</title>
-</head>
-<body>
-</body>
-</html>
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link media="all" rel="stylesheet" href="{% static 'css/dashboard.css' %}" type="text/css" />
+{% endblock %}
+
+{% block body %}
+<div class="header nls">
+	<div class="logo">
+		<a href="/dashboard" title="控制面板"></a>
+	</div>
+	<div class="fr">
+		<div class="admin_info fr">
+			<a href="_blank" href="./">网站首页</a>
+			<span class="vr">|</span>
+			角色名: <span class="mr">admin</span>
+			<a href="/logout">退出</a>
+		</div>
+	</div>
+	<ul class="top_menu white">
+		<li><a href="">控制台</a></li>
+		<li class="on"><a href="">全局</a></li>
+	</ul>
+</div>
+<div class="content">
+	<div class="left_side fl">
+		<div class="left_menu"></div>
+		<a href="" class="menu_close"></a>
+	</div>
+	<div class="main">
+		<div class="crumbs">
+			<div class="options"></div>
+			<div class="main_tab">
+				<div class="tabs">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				<a href="" class="prev"></a>
+				<a href="" class="next"></a>
+			</div>
+		</div>
+		<div class="tab_content"></div>
+	</div>
+</div>
+{% endblock %}

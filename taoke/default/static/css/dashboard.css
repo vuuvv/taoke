@@ -1,0 +1,94 @@
+body {
+    font-family: Arial;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.header {
+    background: #3a6da4;
+    height: 49px;
+    overflow: hidden;
+}
+
+.header .logo {
+    float: left;
+    margin-right: 20px;
+    padding: 8px 0 0 0;
+}
+
+.header .logo a {
+    display: block;
+    text-decoration: none;
+    height: 40px;
+    width: 140px;
+    background: url(img/dashboard/logo.gif) no-repeat;
+}
+
+.header .admin_info {
+    padding: 6px 14px 0 0;
+    color: #fff;
+}
+
+.header .admin_info a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.header .top_menu {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    margin-top: 15px;
+}
+
+.top_menu li,
+.top_menu li a {
+    background: url(img/dashboard/nav_bg.png) no-repeat;
+    display: block;
+    _float: left;
+    height: 34px;
+    line-height: 38px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.top_menu li {
+    float: left;
+    padding: 0 0 0 8px;
+}
+
+.top_menu li a {
+    background-position: right top;
+    padding: 0 15px 0 7px;
+}
+
+.top_menu li.on {
+    background-position: left -43px;
+}
+
+.top_menu li.on a {
+    background-position: right -43px;
+    color: #367abb;
+}
+
+/* left menu */
+.left_side {
+    margin-right: 8px;
+    padding: 8px;
+    display: block;
+    position: relative;
+    width: 118px;
+}
+
+.left_side a.menu_close, .left_side a.menu_open {
+    background: url(img/dashboard/left_menu_toggle.png) no-repeat 1px center;
+    width: 8px;
+    display: block;
+    position: absolute;
+    z-index: 100;
+    height: auto;
+    right: -9px;
+    top: 0;
+}
+
