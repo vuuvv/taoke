@@ -15,7 +15,7 @@
 		<a href="/dashboard" title="控制面板"></a>
 	</div>
 	<div class="fr">
-		<div class="admin_info fr">
+		<div class="admin_info">
 			<a href="_blank" href="./">网站首页</a>
 			<span class="vr">|</span>
 			角色名: <span class="mr">admin</span>
@@ -23,30 +23,67 @@
 		</div>
 	</div>
 	<ul class="top_menu white">
-		<li><a href="">控制台</a></li>
-		<li class="on"><a href="">全局</a></li>
+		<li><a style="outline:none;" hidefocus="true" href="">控制台</a></li>
+		<li class="on"><a style="outline:none;" hidefocus="true" href="">全局</a></li>
 	</ul>
 </div>
 <div class="content">
 	<div class="left_side fl">
-		<div class="left_menu">
+		<div class="left_menu nls" id="left_menu">
+			<h3>
+				帐户管理
+				<span class="cu on" title="展开或关闭"></span>
+			</h3>
 			<ul>
-				<li>123</li>
+				<li>
+					<a hidefocus="true" href="/dashboard/user">用户管理</a>
+				</li>
+				<li>
+					<a hidefocus="true" href="/dashboard/group">用户组管理</a>
+				</li>
+				<li>
+					<a hidefocus="true" href="/dashboard/menu">后台菜单</a>
+				</li>
+			</ul>
+			<h3>
+				用户组管理
+				<span class="cu" title="展开或关闭"></span>
+			</h3>
+			<ul>
+				<li>
+					<a hidefocus="true" href="">商品采集</a>
+				</li>
+				<li>
+					<a hidefocus="true" href="">批量添加</a>
+				</li>
 			</ul>
 		</div>
-		<a href="" class="left_show" id="left_toggle" style="outline-style: none; outline-color: invert; outline-width: medium;" hidefocus="true" ></a>
+		<a href="" class="left_hide" id="left_toggle" style="outline-style: none; outline-color: invert; outline-width: medium;" hidefocus="true" ></a>
 	</div>
 	<div class="main">
 		<div class="crumbs">
-			<div class="options"></div>
+			<div class="options">
+				<a class="refresh" hidefocus="true" title="刷新页面" href="javascript:;">刷新页面</a>
+				<a class="full_screen" hidefocus="true" title="全屏" href="javascript:;">全屏</a>
+				<a class="restart" hidefocus="true" title="重启服务器" href="javascript:;">重启服务器</a>
+				<a class="dashboard_map" hidefocus="true" title="后台地图" href="javascript:;">后台地图</a>
+			</div>
 			<div class="main_tab">
 				<div class="tabs nls">
-					<ul>
-						<li></li>
+					<ul class="mtab" id="mtab">
+						<li class="current">
+							<span><a>后台首页</a></span>
+						</li>
+						<li>
+							<span>
+								<a>商品管理</a>
+								<a class="del" title="关闭此页">关闭</a>
+							</span>
+						</li>
 					</ul>
 				</div>
-				<a href="" class="prev"></a>
-				<a href="" class="next"></a>
+				<a href="" class="mtab_prev" id="mtab_prev"></a>
+				<a href="" class="mtab_next" id="mtab_next"></a>
 			</div>
 		</div>
 		<div id="main_content" class="main_content"></div>

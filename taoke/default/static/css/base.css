@@ -156,10 +156,6 @@ a {
     color: #444;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 .white, .white a {
     color: #fff;
 }

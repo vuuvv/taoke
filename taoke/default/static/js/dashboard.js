@@ -16,6 +16,7 @@ $(function() {
 		var doc_height = document.documentElement.clientHeight;
 		$('#main_content').height(doc_height - 80);
 		$('#left_toggle').height(doc_height - 52);
+		$('body').css('overflow', 'hidden');
 	}
 
 	set_height();
@@ -33,5 +34,20 @@ $(function() {
 		$('#left_toggle').removeClass('left_show');
 		$('#left_toggle').addClass('left_hide');
 	});
+
+
+	$('#left_menu a').click(function() {
+			var dom = $(this),
+					container = $('#main_content');
+					title = dom.text(),
+					url = dom.attr("href");
+
+			$('#mtab li').removeClass('current');
+			$.ajax(url).done(function(data) {
+				container.html(data)
+			});
+			return false;
+	});
+
 });
 

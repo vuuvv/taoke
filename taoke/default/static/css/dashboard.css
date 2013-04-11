@@ -45,8 +45,8 @@ html.close, html.close body {
 .header .top_menu {
     display: inline-block;
     height: 34px;
-    position: relative;
     margin-top: 15px;
+    position: relative;
 }
 
 .top_menu li,
@@ -54,7 +54,7 @@ html.close, html.close body {
     background: url(img/dashboard/nav_bg.png) no-repeat;
     display: block;
     _float: left;
-    height: 34px;
+    height: 38px;
     line-height: 38px;
     font-size: 14px;
     font-weight: 700;
@@ -114,8 +114,80 @@ html.close, html.close body {
 	background-position: right center;
 }
 
+.left_menu ul li a:hover,
+.left_menu ul li.on, .left_menu h3 span {
+    background: url(img/dashboard/left_menu.png) no-repeat;
+    text-decoration: none;
+}
+
+.left_menu h3 {
+    padding: 0;
+    margin: 0;
+    font-weight: 700;
+    color: #275d96;
+    border-bottom: 1px solid #d9e4ea;
+    line-height: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.left_menu h3 span {
+    background-position: left -78px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 14px;
+    width: 14px;
+    margin-top: 5px;
+}
+
+.left_menu h3 span.on {
+    background-position: -33px -78px;
+}
+
+.left_menu ul li a {
+    line-height: 24px;
+    padding-left: 8px;
+    display: block;
+    text-decoration: none;
+    background-color: #f7fbfc;
+    _width: 100px;
+    outline: none;
+}
+
+.left_menu ul li a:hover {
+    background-position: left -38px;
+}
+
+.left_menu ul li.on {
+    width: 104px;
+    _width: 78px;
+    height: 29px;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.left_menu ul li.on a {
+    height: 29px;
+    line-height: 29px;
+    background: none;
+    padding: 0;
+    display: block;
+}
+
+.left_menu ul li.on a:hover {
+    background: none;
+}
+
+
+/* end left side */
+
 .main {
 	overflow: hidden;
+    _zoom: 1;
+    _float: left;
 }
 
 /* crumbs -- sub tab */
@@ -124,6 +196,147 @@ html.close, html.close body {
 	position: relative;
 }
 
+.refresh, .full_screen, .unfull_screen,
+.mtab_prev, .mtab_next, .mtab_nopre, .mtab_nonext, .mtab_h li, .del {
+    background: url(img/dashboard/options_ico.png) no-repeat;
+    _background: url(img/dashboard/options.gif) no-repeat;
+}
+
+.options {
+    background: url(img/dashboard/options.png) no-repeat;
+    height: 20px;
+    overflow: hidden;
+    width: 179px;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+}
+
+.options a {
+    float: left;
+    font-style: normal;
+    height: 18px;
+    line-height: 18px;
+    margin-top: 1px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.options a:hover {
+    background-color: #f2f2f2;
+}
+
+.refresh {
+    background-position: -61px 2px;
+    text-indent: -2000em;
+    width: 29px;
+}
+
+.full_screen, .unfull_screen {
+    background-position: 8px 3px;
+    text-indent: -2000em;
+    width: 27px;
+}
+
+.unfull_screen {
+    background-position: -27px 3px;
+}
+
+.restart, .dashboard_map {
+    width: 60px;
+    color: #989898;
+    text-align: center;
+}
+
+.dashboard_map {
+    width: 62px;
+}
+
+.main_tab {
+    margin: 0 214px 0 24px;
+}
+
+.mtab_prev, .mtab_next {
+    width: 24px;
+    height: 26px;
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    text-indent: -2000em;
+}
+
+.mtab_prev {
+    background-position: 9px -16px;
+    top: 0;
+    left: 0;
+}
+
+.mtab_next {
+    background-position: -5px -16px;
+    top: 0;
+    right: 190px;
+}
+
+.mtab li {
+    border-left: 1px solid #dedede;
+    display: inline-block;
+    height: 26px;
+    overflow: hidden;
+    float: left;
+}
+
+.mtab li span {
+    display: inline-block;
+    line-height: 26px;
+    height: 26px;
+    padding: 0 10px 0 15px;
+    cursor: pointer;
+}
+
+.mtab li span:hover {
+    background: #e6ebeb;
+}
+
+.mtab li a {
+    outline: none;
+    float: left;
+    color: #666;
+    padding-right: 8px;
+    text-decoration: none;
+    _line-height: 30px;
+}
+
+.mtab li .del {
+    width: 7px;
+    height: 7px;
+    overflow: hidden;
+    display: block;
+    text-indent: -2000em;
+    background-position: -58px -24px;
+    margin: 10px 0 0 0;
+    padding: 0;
+    position: relative;
+}
+
+.mtab li .del:hover {
+    background-position: -65px -24px;
+}
+
+.mtab li.current .del {
+    background-position: -74px -24px;
+}
+
+.mtab li.current .del:hover {
+    background-position: -81px -24px;
+}
+
+.mtab li.current span {
+    background: #89a5ea;
+}
+
+.mtab li.current a {
+    color: #fff;
+}
 
 .main_content {
 	background: #fff;
