@@ -19,7 +19,7 @@ $(function() {
 				container.html(data)
 				*/
 			});
-			return false;
+			//return false;
 		}
 	});
 
@@ -63,21 +63,10 @@ $(function() {
 		$('#left_toggle').addClass('left_hide');
 	});
 
-
-	/*
-	$('#left_menu a').click(function() {
-			var dom = $(this),
-					container = $('#main_content');
-					title = dom.text(),
-					url = dom.attr("href");
-
-			$('#mtab li').removeClass('current');
-			$.ajax(url).done(function(data) {
-				container.html(data)
-			});
-			return false;
+	$(document).ajaxStart(function() {
+		$('#ajax_loading').show();
+	}).ajaxSuccess(function() {
+		$('#ajax_loading').hide();
 	});
-	*/
-
 });
 

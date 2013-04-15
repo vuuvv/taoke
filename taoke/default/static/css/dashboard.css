@@ -190,6 +190,22 @@ html.close, html.close body {
     _float: left;
 }
 
+.loading {
+	background: url(img/dashboard/ajax_loading.gif) no-repeat;
+	padding-left: 30px;
+	line-height: 20px;
+}
+
+.ajax_loading {
+	color: #fff;
+	padding: 2px 5px 2px 25px;
+	background: #ff5151 url(img/dashboard/ajax_loading.gif) no-repeat 3px 2px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
 /* crumbs -- sub tab */
 .crumbs {
 	height: 26px;

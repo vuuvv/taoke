@@ -1,5 +1,6 @@
 from functools import partial, wraps
 from inspect import ismethod
+import json
 
 from django import forms
 from django.db import models
@@ -83,6 +84,9 @@ class Controller(object):
         opts = self.model._meta
         app_label = opts.app_label
 
+        if "_popup" in request.REQUEST:
+            template_name += "_raw"
+
         return TemplateResponse(request, [
             'dashboard/%s/%s/%s.html' % (template_name, opts.object_name.lower(), template_name),
             'dashboard/%s/%s.html' %  (app_label, template_name),
@@ -111,8 +115,17 @@ class Controller(object):
     @route(r'^add/$')
     def add(self, request):
         form_cls = self.get_form_cls()
-        form = form_cls()
-        #return form.as_p()
+
+        if request.method == 'POST':
+            form = form_cls(request.POST, request.FILES)
+            if form.is_valid():
+                self.save_form(request, form, change=False)
+                return json.dumps({ 'success': True })
+            else:
+                return json.dumps({ 'success': False, 'errors': form.errors })
+        else:
+            form = form_cls()
+
         return {
             'form': form,
             'template': 'edit',
