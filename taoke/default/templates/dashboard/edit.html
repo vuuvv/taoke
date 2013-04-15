@@ -1,10 +1,14 @@
+{% load i18n %}
+
 <form action="/contact/" method="post">
-    {% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            {{ field.label_tag }}: {{ field }}
-        </div>
-    {% endfor %}
-    <p><input type="submit" value="Send message" /></p>
+	<table class="table_form">
+		{% for field in form %}
+		<tr>
+			<th>{{ field.label_tag }}</th>
+			<td>{{ field }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<input type="submit" class="btn btn_submit" value="{% trans 'Save' %}"/>
 </form>
 

@@ -344,3 +344,108 @@ html.close, html.close body {
 	position: relative;
 }
 
+/* botton */
+.btn {
+    color: #333;
+    background: #f1f0f0;
+    border: 1px solid #c4c4c4;
+    border-radius: 2px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    padding: 4px 15px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: visible;
+    text-align: center;
+    zoom: 1;
+    white-space: nowrap;
+    margin-right: 10xp;
+    font-family: inherit;
+    position: relative;
+}
+
+.btn:hover {
+    background: #e9e7e7;
+}
+
+.btn_submit {
+    color: #fff;
+    background: #318dd0;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #106bab #106bab #0d68a9;
+}
+
+.btn_submit:hover {
+    background: #3486c1;
+}
+
+/* bottom button */
+.btn_wrap, .bottom_buttons {
+    padding: 4px 10px;
+    background: #ffffe1;
+    line-height: normal;
+    border-top: 1px #a5bcf4 solid;
+}
+
+.bottom_buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    _position: absolute;
+    _top: expression(documentElement.scrollTop+documentElement.clientHeight-this.offsetHeight);
+}
+
+/* form and form input */
+.table_form {
+    width: 100%;
+}
+
+.table_form td {
+    padding-left: 12px;
+}
+
+.table_form td label {
+    vertical-align: middle;
+}
+
+.table_form td, .table_form th {
+    padding: 8px 0 8px 8px;
+}
+
+.table_form thead th {
+    color: #777;
+    padding: 5px 0 5px 8px;
+    background: #eaf0f7;
+    font-weight: normal;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.table_form tbody td, .table_form tbody th {
+    border-bottom: 1px solid #eee;
+}
+
+.colorpanel tbody td, .colorpanel tbody th {
+    padding: 0;
+    border-bottom: none;
+}
+
+.table_form tbody th {
+    font-weight: normal;
+    text-align: right;
+    padding-right: 10px;
+    color: #777;
+}
+
+.input_text, .measure_input, textarea, input.date, input.end_date, .input_focus {
+    border: 1px solid #a7a6aa;
+    height: 18px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #d0d0d0;
+    background: #fff url(img/dashboard/input.png) repeat-x;
+    font-family: Verdana, Geneva, sans-serif, "宋体";
+    font-size: 12px;
+}
+

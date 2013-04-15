@@ -1,3 +1,4 @@
+{% load assets %}
 {% load static %}
 <!DOCTYPE HTML>
 <html lang="en">
@@ -11,14 +12,14 @@
 
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	{% css 'normalize' %}
+	{% css 'base' %}
 	{% block extra_css %}{% endblock %}
-	<script src="{% static 'js/vendor/modernizr-2.6.2.min.js' %}"></script>
+	{% js_vendor 'modernizr-2.6.2.min' %}
 </head>
 <body>
 	{% block body %}{% endblock %}
-	<script src="{% static 'js/vendor/jquery-1.9.1.min.js' %}"></script>
+	{% js_vendor 'jquery-1.9.1.min' %}
 	{% block extra_js %}{% endblock %}
 </body>
 </html>

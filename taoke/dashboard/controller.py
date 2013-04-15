@@ -2,10 +2,17 @@ from functools import partial, wraps
 from inspect import ismethod
 
 from django import forms
+from django.db import models
 from django.http import HttpResponse
 from django.forms.models import modelform_factory
 from django.conf.urls import patterns, url
 from django.template.response import TemplateResponse
+
+from taoke.dashboard import widgets
+
+FORMFIELD_FOR_DBFIELD_DEFAULTS = {
+    models.CharField:       {'widget': widgets.TextBox},
+}
 
 def urlpatterns_property(cls):
     def _urlpatterns(self):
@@ -54,13 +61,19 @@ class Controller(object):
     fields = None
     list_display = ('__str__', )
     filter = ()
+
     form = forms.ModelForm
+    formfield_widgets = {}
 
     buttons = ()
 
     def __init__(self, site, model):
         self.model = model
         self.site = site
+
+        widgets = FORMFIELD_FOR_DBFIELD_DEFAULTS.copy()
+        widgets.update(self.formfield_widgets)
+        self.formfield_widgets = widgets
 
     @property
     def urls(self):
@@ -74,29 +87,36 @@ class Controller(object):
             'dashboard/%s/%s/%s.html' % (template_name, opts.object_name.lower(), template_name),
             'dashboard/%s/%s.html' %  (app_label, template_name),
             'dashboard/%s.html' % template_name
-        ])
+        ], context)
 
-    def get_form(self):
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        for cls in db_field.__class__.mro():
+            if cls in self.formfield_widgets:
+                kwargs = dict(self.formfield_widgets[cls], **kwargs)
+                return db_field.formfield(**kwargs)
+        return db_field.formfield(**kwargs)
+
+    def get_form_cls(self):
         defaults = {
             'form': self.form,
             'fields': self.fields,
+            'formfield_callback': self.formfield_for_dbfield,
         }
         return modelform_factory(self.model, **defaults)
 
-
-    @route(r'$')
+    @route(r'^$')
     def list(self, request):
         pass
 
     @route(r'^add/$')
     def add(self, request):
-        ModelForm = self.get_form()
-        form = ModelForm()
-        return form.as_p()
-        #return {
-        #    'form': form,
-        #    'template': 'edit',
-        #}
+        form_cls = self.get_form_cls()
+        form = form_cls()
+        #return form.as_p()
+        return {
+            'form': form,
+            'template': 'edit',
+        }
 
     @route(r'^(.+)/$')
     def edit(self, request, id):

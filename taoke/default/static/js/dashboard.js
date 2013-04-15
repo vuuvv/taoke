@@ -1,6 +1,34 @@
 $(function() {
+	var workspace = Backbone.Router.extend({
+		routes: {
+			'hello': 'hello',
+			'*url': 'dispatch'
+		},
+
+		hello: function() {
+			$.dialog('hello');
+		},
+
+		dispatch: function(url) {
+			if (!url)
+				return false;
+			$.ajax("/" + url, data={}).done(function(data) {
+				$.dialog(data);
+					/*
+				container = $('#main_content');
+				container.html(data)
+				*/
+			});
+			return false;
+		}
+	});
+
+	app = new workspace();
+
+	Backbone.history.start();
+
 	$.fn.toggle_click = function(first, second) {
-		var ele = this, 
+		var ele = this,
 			name = 'click_state';
 		ele.data(name, 0);
 		ele.click(function() {
@@ -36,6 +64,7 @@ $(function() {
 	});
 
 
+	/*
 	$('#left_menu a').click(function() {
 			var dom = $(this),
 					container = $('#main_content');
@@ -48,6 +77,7 @@ $(function() {
 			});
 			return false;
 	});
+	*/
 
 });
 

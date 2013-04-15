@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-15 09:53+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+
+#: .\models.py:10
+msgid "Save"
+msgstr "保存"
+
+#: .\models.py:10
+msgid "Name"
+msgstr "名称"
+
+#: .\models.py:11
+msgid "Data"
+msgstr "数据"
+
+#: .\models.py:12
+msgid "Memo"
+msgstr "备注"
+
+#: .\models.py:13
+msgid "Favorite"
+msgstr "放入收藏夹"
+
+#: .\models.py:14
+msgid "Visible"
+msgstr "是否显示"
+
+#: .\models.py:16
+msgid "Parent"
+msgstr "父目录"
+
+#: .\models.py:17
+msgid "Group"
+msgstr "用户组"
+
+#: .\models.py:20
+msgid "Dashboard Menu"
+msgstr ""
+
+#: .\models.py:21
+msgid "Dashboard Menus"
+msgstr ""
+
+#: .\models.py:37
+msgid "action time"
+msgstr ""
+
+#: .\models.py:40
+msgid "object id"
+msgstr ""
+
+#: .\models.py:41
+msgid "object repr"
+msgstr ""
+
+#: .\models.py:42
+msgid "action flag"
+msgstr ""
+
+#: .\models.py:43
+msgid "change message"
+msgstr ""
+
+#: .\models.py:46
+msgid "log entry"
+msgstr ""
+
+#: .\models.py:47
+msgid "log entries"
+msgstr ""
+
+#: .\models.py:56
+#, python-format
+msgid "Added \"%(object)s\"."
+msgstr ""
+
+#: .\models.py:58
+#, python-format
+msgid "Changed \"%(object)s\" - %(changes)s"
+msgstr ""
+
+#: .\models.py:60
+#, python-format
+msgid "Deleted \"%(object)s.\""
+msgstr ""
