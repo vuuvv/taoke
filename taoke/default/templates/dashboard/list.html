@@ -1,0 +1,39 @@
+{% load getattr %}
+
+{% if tools %}
+<div class="subnav">
+	<div class="content_menu ib_a blue line_x">
+	{% for tool in tools %}
+	<a href="{{ url tool.0 }}" class="fb">{{ tool.1 }}</a>
+	{{ tool }}
+	{% endfor %}
+	</div>
+</div>
+{% endif %}
+
+<div class="pad_lr_10">
+	<div class="table_list">
+		<table>
+			<thead>
+				<tr>
+					<th width="40"><input type="checkbox" name="checkall" class="J_checkall"></th>
+					<th width="40"><span tdtype="order_by" fieldname="id">ID</span></th>
+					{% for item in columns %}
+					<th>{{ item }}</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for obj in objs %}
+				<tr>
+					<td align="center"><input type="checkbox" value="{{ obj.id }}" class="J_checkitem"></td>
+					<td align="center">{{ obj.id }}</td>
+						{% for col in list_display %}
+					<td align="center">{{ obj|getattr:col }}</td>
+						{% endfor %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -13,11 +13,19 @@ $(function() {
 			if (!url)
 				return false;
 			$.ajax("/" + url, data={}).done(function(data) {
-				$.dialog(data);
 					/*
+				$.dialog({
+					title: "添加",
+					padding: null,
+					content: data,
+					ok: function() {
+					},
+					cancel: function() {
+					}
+				});
+				*/
 				container = $('#main_content');
 				container.html(data)
-				*/
 			});
 			//return false;
 		}

@@ -8,12 +8,32 @@ from django.http import HttpResponse
 from django.forms.models import modelform_factory
 from django.conf.urls import patterns, url
 from django.template.response import TemplateResponse
+from django.core.validators import MaxValueValidator, MaxLengthValidator
+from django.utils.translation import ugettext_lazy as _
 
+from taoke.dashboard.models import LogEntry, ADDITION, DELETION, CHANGE
 from taoke.dashboard import widgets
 
 FORMFIELD_FOR_DBFIELD_DEFAULTS = {
     models.CharField:       {'widget': widgets.TextBox},
 }
+
+def get_validators(form):
+    validators = {}
+    for name, field in form.fields.iteritems():
+        validator = {}
+        if field.required:
+            validator['min'] = 1
+            validator['onerrormin'] = 'Please input %s' % name
+        for v in field.validators:
+            if isinstance(v, MaxLengthValidator):
+                validator['max'] = v.limit_value
+                validator['onerror'] = u"%s" % v.message
+        if validator:
+            validators[name] = u','.join([u'"%s":%s' % (k, u'"%s"' % v if isinstance(v, basestring) else v)for k, v in validator.iteritems()])
+
+    return validators
+
 
 def urlpatterns_property(cls):
     def _urlpatterns(self):
@@ -67,6 +87,9 @@ class Controller(object):
     formfield_widgets = {}
 
     buttons = ()
+    tools = (
+        (_('Add'), True, 'add_url'),
+    )
 
     def __init__(self, site, model):
         self.model = model
@@ -79,6 +102,11 @@ class Controller(object):
     @property
     def urls(self):
         return self.urlpatterns
+
+    @property
+    def add_url(self):
+        app, module = self.model._meta.app_label, self.model._meta.module_name
+        return '%s_%s_add' % (app, module)
 
     def _render(self, request, template_name, context):
         opts = self.model._meta
@@ -108,9 +136,60 @@ class Controller(object):
         }
         return modelform_factory(self.model, **defaults)
 
+    def get_tools(self):
+        tools = []
+        for name, popup, url in self.tools:
+            tools.append((name, popup, getattr(self, url, url)))
+        return tools
+
+    def get_columns(self):
+        columns = []
+        opts = self.model._meta
+        for d in self.list_display:
+            columns.append(opts.get_field(d).verbose_name)
+        return columns
+
+    def log_addition(self, request, object):
+        LogEntry.objects.log_adtion(
+            user_id             = request.user.pk,
+            content_type_id     = ContentType.objects.get_for_model(object).pk,
+            object_id           = object.pk,
+            object_repr         = force_unicode(object),
+            action_flag         = ADDITION,
+        )
+
+    def log_change(self, request, object):
+        LogEntry.objects.log_adtion(
+            user_id             = request.user.pk,
+            content_type_id     = ContentType.objects.get_for_model(object).pk,
+            object_id           = object.pk,
+            object_repr         = force_unicode(object),
+            action_flag         = CHANGE,
+            change_message      = message,
+        )
+
+    def log_deletion(self, request, object):
+        LogEntry.objects.log_adtion(
+            user_id             = request.user.pk,
+            content_type_id     = ContentType.objects.get_for_model(object).pk,
+            object_id           = object.pk,
+            object_repr         = force_unicode(object),
+            action_flag         = DELETION,
+        )
+
     @route(r'^$')
     def list(self, request):
-        pass
+        if self.list_display:
+            objs = self.model.objects.all()
+        else:
+            objs = self.model.objects.values(*self.list_display)
+
+        return {
+            'objs': objs,
+            'tools': self.get_tools(),
+            'columns': self.get_columns(),
+            'list_display': self.list_display,
+        }
 
     @route(r'^add/$')
     def add(self, request):
@@ -119,7 +198,8 @@ class Controller(object):
         if request.method == 'POST':
             form = form_cls(request.POST, request.FILES)
             if form.is_valid():
-                self.save_form(request, form, change=False)
+                new_object = self.save_form(request, form, change=False)
+                self.log_addition(request, new_object)
                 return json.dumps({ 'success': True })
             else:
                 return json.dumps({ 'success': False, 'errors': form.errors })
@@ -128,6 +208,8 @@ class Controller(object):
 
         return {
             'form': form,
+            'validators': get_validators(form),
+            'form_name': self.model._meta.module_name,
             'template': 'edit',
         }
 
