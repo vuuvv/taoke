@@ -265,6 +265,72 @@ a {
     margin-top: 10px;
 }
 
+.pad_6 {
+	padding:6px;
+	overflow:hidden;
+}
+
+.pad_10 {
+	padding:10px;
+	overflow:hidden;
+}
+
+.pad_lr_10 {
+	padding:0 10px;
+}
+
+.pad_lr_6 {
+	padding:0 6px;
+}
+
+.lh20 {
+	line-height: 20px;
+}
+
+.lh22 {
+	line-height: 22px;
+}
+
+.lh24 {
+	line-height: 24px;
+}
+
+.lh26 {
+	line-height: 26px;
+}
+
+.lh28 {
+	line-height: 28px;
+}
+
+.line_x {
+	border-bottom:1px solid #eee;
+}
+
+.title_1 {
+	border-bottom:1px solid #eee;
+	padding-left:5px
+}
+
+.title_2 {
+	text-align:left;
+	height:25px;
+	*height:24px;
+	font:14px "MicroSoft YaHei","SimHei";
+	color:#333;
+	*line-height:25px;
+	margin:0;
+	padding:4px 0 3px 0px;
+}
+
+.title_3 {
+	text-align:left;
+	font-size:12px;
+	font-weight:normal;
+	padding:4px 0 4px 0px;
+}
+
+
 span.vr {
     color: #4d82bc;
     padding: 0 4px;
@@ -291,6 +357,13 @@ span.vr {
     display: block;
     width: 0;
     height: 150%;
+}
+
+.ib, .ib_li li, .ib_a a, .ib-span span,.common_form ul li span.text,.fixed_bottom .fixed_but .btn,.arrowhead,.arrowhead-b,shortcut a,.shortcut a span,.picBut a,.tab_use {
+	display:inline-block;
+	display:-moz-inline-stack;
+	zoom:1;
+	*display:inline;
 }
 
 /*

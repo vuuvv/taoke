@@ -7,6 +7,7 @@ from django.db import models
 from django.http import HttpResponse
 from django.forms.models import modelform_factory
 from django.conf.urls import patterns, url
+from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.core.validators import MaxValueValidator, MaxLengthValidator
 from django.utils.translation import ugettext_lazy as _
@@ -106,7 +107,7 @@ class Controller(object):
     @property
     def add_url(self):
         app, module = self.model._meta.app_label, self.model._meta.module_name
-        return '%s_%s_add' % (app, module)
+        return reverse('%s_%s_add' % (app, module))
 
     def _render(self, request, template_name, context):
         opts = self.model._meta

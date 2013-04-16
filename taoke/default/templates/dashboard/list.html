@@ -4,8 +4,13 @@
 <div class="subnav">
 	<div class="content_menu ib_a blue line_x">
 	{% for tool in tools %}
-	<a href="{{ url tool.0 }}" class="fb">{{ tool.1 }}</a>
-	{{ tool }}
+	<a href="{{ tool.2 }}" class="fb {% if tool.1 %}bnt{% endif %}">
+		{% if tool.1 %}
+		<em>{{ tool.0 }}</em>
+		{% else %}
+		{{ tool.0 }}
+		{% endif %}
+	</a>
 	{% endfor %}
 	</div>
 </div>
@@ -37,3 +42,24 @@
 		</table>
 	</div>
 </div>
+
+<script type="text/javascript">
+$(function() {
+	$('.bnt').click(function() {
+		var dom = $(this);
+		var url = dom.attr("href");
+		$.ajax(url, data={_popup: true}).done(function(data) {
+			$.dialog({
+				title: dom.find('em').text(),
+				padding: null,
+				content: data,
+				ok: function() {
+				},
+				cancel: function() {
+				}
+			});
+		});
+		return false;
+	});
+});
+</script>

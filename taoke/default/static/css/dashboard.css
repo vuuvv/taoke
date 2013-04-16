@@ -206,6 +206,69 @@ html.close, html.close body {
 	display: none;
 }
 
+.subnav {
+	padding: 10px;
+}
+
+.content_menu { 
+	padding:0 0 6px;
+}
+
+.content_menu a:hover {
+	text-decoration: none;
+}
+
+.content_menu a em {
+	display:inline-block;
+	display:-moz-inline-stack;
+	zoom:1;
+	*display:inline;
+}
+
+.content_menu a.bnt,.content_menu a.bnt em,
+.content_menu a.on,.content_menu a.on em {
+	background:url(img/dashboard/bnt_bg.png) no-repeat;
+	height:28px;
+	line-height:28px;
+	*line-height:28px
+}
+
+.content_menu span {
+	color:#ddd;
+	padding:0 8px;
+}
+
+.content_menu a {
+	cursor:pointer;
+}
+
+.content_menu a.bnt {
+   	padding:0 0 0 5px;
+}
+
+.content_menu a.bnt em {
+   	padding:0 10px 0 5px;
+	color:#fff;
+	background-position: right top;
+	background-position:right -1px\0;
+}
+
+.content_menu a.on {
+	background-position:left -40px;
+	*background-position:left -41px;
+	_background-position:left -39px;
+	color:#fff;
+	padding:0 0 0 5px;
+}
+
+.content_menu a.on em {
+	background-position:right -40px;
+	background-position:right -41px\0;
+	*background-position:right -41px;
+	_background-position:right -39px;
+	padding:0 10px 0 5px;
+}
+
 /* crumbs -- sub tab */
 .crumbs {
 	height: 26px;
