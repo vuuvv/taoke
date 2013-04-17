@@ -1,6 +1,7 @@
 {% load i18n %}
 
-<form id="id_{{ form_name }}_form" action="/contact/" method="post">
+<form id="id_{{ form_name }}_form" method="post">
+{% csrf_token %}
 	<table class="table_form">
 		{% for field in form %}
 		<tr>
@@ -12,17 +13,20 @@
 </form>
 
 <script type="text/javascript">
-$.formValidator.initConfig({
-	formid: 'id_{{ form_name }}_form',
-	autotip: true
-});
-{% for name, validator in validators.items %}
-$('#id_{{ name }}').formValidator({
-	onshow: 'Please input {{ name }} name',
-	onfocus: 'Please input {{ name }} name',
-	oncorrect: 'Input right',
-}).inputValidator({
-	{{ validator|safe }}
-});
-{% endfor %}
+$(function() {
+	var formid = 'id_{{ form_name }}_form';
+	$.formValidator.initConfig({
+		formid: formid,
+		autotip: true
+	});
+	{% for name, validator in validators.items %}
+	$('#id_{{ name }}').formValidator({
+		onshow: 'Please input {{ name }} name',
+		onfocus: 'Please input {{ name }} name',
+		oncorrect: 'Input right'
+	}).inputValidator({
+		{{ validator|safe }}
+	});
+	{% endfor %}
+})
 </script>

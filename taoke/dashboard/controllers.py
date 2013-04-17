@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, Group
 
 class DashboardMenuController(Controller):
     model = Menu
-    fields = ('name', 'data', 'memo', 'visible', 'favorite')
+    fields = ('parent', 'name', 'data', 'memo', 'visible', 'favorite')
     list_display = ('name', 'visible', 'favorite')
 
 site.register(DashboardMenuController)

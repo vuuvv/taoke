@@ -3,7 +3,7 @@ from inspect import ismethod
 import json
 
 from django import forms
-from django.db import models
+from django.db import models, transaction
 from django.http import HttpResponse
 from django.forms.models import modelform_factory
 from django.conf.urls import patterns, url
@@ -11,6 +11,12 @@ from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.core.validators import MaxValueValidator, MaxLengthValidator
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+from django.contrib.contenttypes.models import ContentType
+from django.utils.encoding import force_unicode
+
+from mptt.models import MPTTModel
 
 from taoke.dashboard.models import LogEntry, ADDITION, DELETION, CHANGE
 from taoke.dashboard import widgets
@@ -18,6 +24,8 @@ from taoke.dashboard import widgets
 FORMFIELD_FOR_DBFIELD_DEFAULTS = {
     models.CharField:       {'widget': widgets.TextBox},
 }
+
+csrf_protect_m = method_decorator(csrf_protect)
 
 def get_validators(form):
     validators = {}
@@ -82,6 +90,10 @@ class Controller(object):
     model = None
     fields = None
     list_display = ('__str__', )
+    list_display_action = (
+        (_('Edit'), True, 'edit_url'),
+        (_('Delete'), True, 'delete_url'),
+    )
     filter = ()
 
     form = forms.ModelForm
@@ -109,9 +121,20 @@ class Controller(object):
         app, module = self.model._meta.app_label, self.model._meta.module_name
         return reverse('%s_%s_add' % (app, module))
 
+    def edit_url(self, obj):
+        app, module = self.model._meta.app_label, self.model._meta.module_name
+        return reverse('%s_%s_edit' % (app, module), args=(obj.id, ))
+
+    def delete_url(self, obj):
+        app, module = self.model._meta.app_label, self.model._meta.module_name
+        return reverse('%s_%s_delete' % (app, module), args=(obj.id, ))
+
+
     def _render(self, request, template_name, context):
         opts = self.model._meta
         app_label = opts.app_label
+
+        template_name = self.get_template_name(template_name)
 
         if "_popup" in request.REQUEST:
             template_name += "_raw"
@@ -129,6 +152,14 @@ class Controller(object):
                 return db_field.formfield(**kwargs)
         return db_field.formfield(**kwargs)
 
+    def save_form(self, request, form):
+        return form.save()
+
+    def get_template_name(self, template_name):
+        if issubclass(self.model, MPTTModel) and template_name == 'list':
+            return 'tree%s' % template_name
+        return template_name
+
     def get_form_cls(self):
         defaults = {
             'form': self.form,
@@ -143,6 +174,23 @@ class Controller(object):
             tools.append((name, popup, getattr(self, url, url)))
         return tools
 
+    def get_list_display_action(self, objs):
+        ret = []
+        for obj in objs:
+            actions = []
+            for a in self.list_display_action:
+                name, popup, callback = a
+                callback = getattr(self, callback, callback)
+                if callable(callback):
+                    callback = callback(obj)
+                actions.append((name, popup, callback))
+
+            ret.append({
+                'item': obj,
+                'actions': actions
+            })
+        return ret
+
     def get_columns(self):
         columns = []
         opts = self.model._meta
@@ -151,7 +199,7 @@ class Controller(object):
         return columns
 
     def log_addition(self, request, object):
-        LogEntry.objects.log_adtion(
+        LogEntry.objects.log_action(
             user_id             = request.user.pk,
             content_type_id     = ContentType.objects.get_for_model(object).pk,
             object_id           = object.pk,
@@ -160,7 +208,7 @@ class Controller(object):
         )
 
     def log_change(self, request, object):
-        LogEntry.objects.log_adtion(
+        LogEntry.objects.log_action(
             user_id             = request.user.pk,
             content_type_id     = ContentType.objects.get_for_model(object).pk,
             object_id           = object.pk,
@@ -170,7 +218,7 @@ class Controller(object):
         )
 
     def log_deletion(self, request, object):
-        LogEntry.objects.log_adtion(
+        LogEntry.objects.log_action(
             user_id             = request.user.pk,
             content_type_id     = ContentType.objects.get_for_model(object).pk,
             object_id           = object.pk,
@@ -185,21 +233,26 @@ class Controller(object):
         else:
             objs = self.model.objects.values(*self.list_display)
 
+        objs = self.get_list_display_action(objs)
+
         return {
             'objs': objs,
             'tools': self.get_tools(),
             'columns': self.get_columns(),
             'list_display': self.list_display,
+            'table_id': '%s_table_list' % self.model._meta.module_name,
         }
 
     @route(r'^add/$')
+    @csrf_protect_m
+    @transaction.commit_on_success
     def add(self, request):
         form_cls = self.get_form_cls()
 
         if request.method == 'POST':
             form = form_cls(request.POST, request.FILES)
             if form.is_valid():
-                new_object = self.save_form(request, form, change=False)
+                new_object = self.save_form(request, form)
                 self.log_addition(request, new_object)
                 return json.dumps({ 'success': True })
             else:
@@ -216,7 +269,7 @@ class Controller(object):
 
     @route(r'^(.+)/$')
     def edit(self, request, id):
-        pass
+        return {}
 
     @route(r'^(.+)/delete/$')
     def delete(self, request):
@@ -225,5 +278,4 @@ class Controller(object):
     @route(r'^(.+)/history/$')
     def history(self, request):
         pass
-
 

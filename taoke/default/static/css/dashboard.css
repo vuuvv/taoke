@@ -231,6 +231,7 @@ html.close, html.close body {
 	height:28px;
 	line-height:28px;
 	*line-height:28px
+    outline: none;
 }
 
 .content_menu span {
@@ -523,6 +524,45 @@ html.close, html.close body {
     background:#fdf9e5;
 }
 
+table.treetable span.indenter {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  width: 19px;
+}
+
+/*
+table.treetable span.indenter a {
+  background-position: left center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  text-decoration: none;
+  width: 19px;
+  outline: none;
+}
+
+table.treetable tr td .indenter {
+    background-position: left center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    padding: 0;
+    zoom: 1;
+}
+
+table.treetable tr.collapsed td .indenter {
+    background-image: url(img/dashboard/tv-expandable.gif);
+}
+
+table.treetable tr.expanded td .indenter {
+    background-image: url(img/dashboard/tv-collapsable.gif);
+}
+    */
 
 /* form and form input */
 .table_form {

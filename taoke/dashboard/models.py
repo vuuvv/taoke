@@ -3,11 +3,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import smart_unicode
+from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 
 class Menu(MPTTModel):
     name = models.CharField(_('Name'), max_length=255)
+    view = models.CharField(_('View'), max_length=255)
     data = models.CharField(_('Data'), blank=True, null=True, max_length=255)
     memo = models.CharField(_('Memo'), blank=True, null=True, max_length=255)
     favorite = models.BooleanField(_('Favorite'), default=False)
@@ -23,6 +25,12 @@ class Menu(MPTTModel):
 
     def __unicode__(self):
         return "%s" % self.name
+
+    def url(self):
+        try:
+            return reverse(self.view)
+        except:
+            return ""
 
 ADDITION = 1
 CHANGE = 2
@@ -41,6 +49,8 @@ class LogEntry(models.Model):
     object_repr = models.CharField(_('object repr'), max_length=200)
     action_flag = models.PositiveSmallIntegerField(_('action flag'))
     change_message = models.TextField(_('change message'), blank=True)
+
+    objects = LogEntryManager()
 
     class Meta:
         verbose_name = _('log entry')

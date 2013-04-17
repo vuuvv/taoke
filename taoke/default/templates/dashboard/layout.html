@@ -4,6 +4,8 @@
 
 {% block extra_css %}
 {% css 'dashboard' %}
+	{% css_vendor 'treetable/jquery.treetable' %}
+	{% css_vendor 'treetable/jquery.treetable.theme.default' %}
 <!--[if gte IE 7]><!-->
 	{% css_vendor 'artdialog/skins/blue' %}
 <!--<![endif]-->
@@ -18,7 +20,9 @@
 	{% js_vendor 'backbone' %}
 	{% js_vendor 'jquery.artDialog' %}
 	{% js_vendor 'artDialog.plugins' %}
+	{% js_vendor 'jquery.form' %}
 	{% js_vendor 'formvalidator' %}
+	{% js_vendor 'jquery.treetable' %}
 	{% js 'dashboard' %}
 {% endblock %}
 
@@ -31,45 +35,32 @@
 		<div class="admin_info">
 			<a href="_blank" href="./">网站首页</a>
 			<span class="vr">|</span>
-			角色名: <span class="mr">admin</span>
-			<a href="/logout">退出</a>
+			角色名: <span class="mr">{{ user.username }}</span>
+			<span class="vr">|</span>
+			<a href="{% url dashboard_logout %}">退出</a>
 		</div>
 	</div>
 	<ul class="top_menu white">
-		<li><a style="outline:none;" hidefocus="true" href="">控制台</a></li>
-		<li class="on"><a style="outline:none;" hidefocus="true" href="">全局</a></li>
+		{% for menu in top_menus %}
+		<li {% if forloop.first %}class="on"{% endif %}><a style="outline:none;" hidefocus="true" href="">{{ menu.name }}</a></li>
+		{% endfor %}
 	</ul>
 </div>
 <div class="content">
 	<div class="left_side fl">
 		<div class="left_menu nls" id="left_menu">
+			{% for menu in left_menus %}
 			<h3>
-				帐户管理
-				<span class="cu on" title="展开或关闭"></span>
-			</h3>
-			<ul>
-				<li>
-					<a hidefocus="true" href="/dashboard/user">用户管理</a>
-				</li>
-				<li>
-					<a hidefocus="true" href="/dashboard/group">用户组管理</a>
-				</li>
-				<li>
-					<a hidefocus="true" href="#{% url dashboard_menu_add %}">后台菜单</a>
-				</li>
-			</ul>
-			<h3>
-				用户组管理
+				{{ menu.name }}
 				<span class="cu" title="展开或关闭"></span>
 			</h3>
 			<ul>
+				{% for sub in menu.get_children %}
 				<li>
-					<a hidefocus="true" href="">商品采集</a>
+					<a hidefocus="true" href="#{{ sub.url  }}">{{ sub.name }}</a>
 				</li>
-				<li>
-					<a hidefocus="true" href="">批量添加</a>
-				</li>
-			</ul>
+				{% endfor %}
+			{% endfor %}
 		</div>
 		<a href="" class="left_hide" id="left_toggle" style="outline-style: none; outline-color: invert; outline-width: medium;" hidefocus="true" ></a>
 	</div>

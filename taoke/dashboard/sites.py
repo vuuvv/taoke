@@ -2,8 +2,10 @@ from django.conf.urls import patterns, url, include
 from django.db.models.base import ModelBase
 from django.core.exceptions import ImproperlyConfigured
 from django.template.response import TemplateResponse
+from django.contrib.auth.views import login
 
 from taoke.dashboard.controller import Controller
+from taoke.dashboard.models import Menu
 
 class AlreadyRegistered(Exception):
     pass
@@ -55,8 +57,9 @@ class Dashboard(object):
     @property
     def urlpatterns(self):
         urlpatterns = patterns('',
-            url(r'^$', self.index, name='dashboard index'),
-            url(r'^logout/$', self.logout, name='dashboard logout'),
+            url(r'^$', self.index, name='dashboard_index'),
+            url(r'^logout/$', self.logout, name='dashboard_logout'),
+            url(r'^login/$', self.login, name='dashboard_login'),
 
             url(r'^all_urls/$', self.all_urls, name='show all urls'),
         )
@@ -74,10 +77,18 @@ class Dashboard(object):
         return self.urlpatterns
 
     def index(self, request):
-        return TemplateResponse(request, 'dashboard/index.html', {})
+        top_menus = Menu.objects.root_nodes().filter(visible=True)
+        left_menus = top_menus[0].get_children().filter(visible=True).filter(level__lt=3)
+        return TemplateResponse(request, 'dashboard/index.html', {
+            'top_menus': top_menus,
+            'left_menus': left_menus
+        })
 
-    def logout(self):
+    def logout(self, request):
         pass
+
+    def login(self, request):
+        return login(request, 'dashboard/login.html')
 
     def all_urls(self, request):
         from django.core import urlresolvers
