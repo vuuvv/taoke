@@ -300,6 +300,7 @@ html.close, html.close body {
     margin-top: 1px;
     overflow: hidden;
     text-decoration: none;
+    outline: none;
 }
 
 .options a:hover {

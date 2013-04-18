@@ -4,21 +4,24 @@ import json
 
 from django import forms
 from django.db import models, transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.forms.models import modelform_factory
 from django.conf.urls import patterns, url
-from django.core.urlresolvers import reverse
-from django.template.response import TemplateResponse
+from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse, resolve
 from django.core.validators import MaxValueValidator, MaxLengthValidator
-from django.utils.translation import ugettext_lazy as _
+from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_protect
-from django.utils.decorators import method_decorator
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.util import unquote
+from django.utils.translation import ugettext_lazy as _
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_unicode
+from django.utils.text import get_text_list
 
 from mptt.models import MPTTModel
 
-from taoke.dashboard.models import LogEntry, ADDITION, DELETION, CHANGE
+from taoke.dashboard.models import Menu, LogEntry, ADDITION, DELETION, CHANGE
 from taoke.dashboard import widgets
 
 FORMFIELD_FOR_DBFIELD_DEFAULTS = {
@@ -168,6 +171,14 @@ class Controller(object):
         }
         return modelform_factory(self.model, **defaults)
 
+    def get_object(self, object_id):
+        model = self.model
+        try:
+            object_id = model._meta.pk.to_python(object_id)
+            return model.objects.get(pk=object_id)
+        except (model.DoesNotExist, ValidationError):
+            return None
+
     def get_tools(self):
         tools = []
         for name, popup, url in self.tools:
@@ -207,7 +218,7 @@ class Controller(object):
             action_flag         = ADDITION,
         )
 
-    def log_change(self, request, object):
+    def log_change(self, request, object, message):
         LogEntry.objects.log_action(
             user_id             = request.user.pk,
             content_type_id     = ContentType.objects.get_for_model(object).pk,
@@ -226,6 +237,12 @@ class Controller(object):
             action_flag         = DELETION,
         )
 
+    def construct_change_message(self, request, form):
+        change_message = []
+        if form.changed_data:
+            change_message.append(_('Changed %s.') % get_text_list(form.changed_data, _('and')))
+        return change_message or _('No fields changed.')
+
     @route(r'^$')
     def list(self, request):
         if self.list_display:
@@ -235,13 +252,23 @@ class Controller(object):
 
         objs = self.get_list_display_action(objs)
 
-        return {
+        context =  {
             'objs': objs,
             'tools': self.get_tools(),
             'columns': self.get_columns(),
             'list_display': self.list_display,
             'table_id': '%s_table_list' % self.model._meta.module_name,
         }
+
+        view = resolve(request.path_info).url_name
+        menu = Menu.objects.get(view=view)
+
+        return json.dumps({
+            'success': True,
+            'title': menu.name,
+            'id': menu.id,
+            'content': self._render(request, 'list', context).rendered_content,
+        })
 
     @route(r'^add/$')
     @csrf_protect_m
@@ -268,8 +295,37 @@ class Controller(object):
         }
 
     @route(r'^(.+)/$')
+    @csrf_protect_m
+    @transaction.commit_on_success
     def edit(self, request, id):
-        return {}
+        model = self.model
+        opts = model._meta
+
+        obj = self.get_object(unquote(id))
+
+        if obj is None:
+            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
+
+        form_cls = self.get_form_cls()
+
+        if request.method == 'POST':
+            form = form_cls(request.POST, request.FILES, instance=obj)
+            if form.is_valid():
+                new_object = self.save_form(request, form)
+                change_message = self.construct_change_message(request, form)
+                self.log_change(request, new_object, change_message)
+                return json.dumps({ 'success': True })
+            else:
+                return json.dumps({ 'success': False, 'errors': form.errors })
+        else:
+            form = form_cls(instance=obj)
+
+        return {
+            'form': form,
+            'validators': get_validators(form),
+            'form_name': opts.module_name,
+            'template': 'edit',
+        }
 
     @route(r'^(.+)/delete/$')
     def delete(self, request):

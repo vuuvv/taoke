@@ -9,7 +9,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class Menu(MPTTModel):
     name = models.CharField(_('Name'), max_length=255)
-    view = models.CharField(_('View'), max_length=255)
+    view = models.CharField(_('View'), blank=True, null=True, max_length=255)
     data = models.CharField(_('Data'), blank=True, null=True, max_length=255)
     memo = models.CharField(_('Memo'), blank=True, null=True, max_length=255)
     favorite = models.BooleanField(_('Favorite'), default=False)
